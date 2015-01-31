@@ -97,11 +97,11 @@ def depthFirstSearch(problem):
     while not frontier.isEmpty():
         # Pop last element in frontier and add to explored list
         state = frontier.pop()
-        explored.add(state)
         tmpDirs = dirs.pop()
         # Break when goal is reached
         if problem.isGoalState(state):
             return tmpDirs 
+        explored.add(state)
         
         for successor, action, stepCost in problem.getSuccessors(state):
             if not successor in explored:
@@ -115,7 +115,6 @@ def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     frontier = util.Queue()
-    f = set()
     explored = set()
     dirs = util.Queue()
     tmpDirs = list()
@@ -125,60 +124,23 @@ def breadthFirstSearch(problem):
     while not frontier.isEmpty():
         # Pop first element in frontier and add to explored list
         state = frontier.pop()
-        explored.add(state)
         tmpDirs = dirs.pop()
         # Break when goal is reached
         if problem.isGoalState(state):
-            return tmpDirs
-
+            break
+        explored.add(state)
         
         for successor, action, stepCost in problem.getSuccessors(state):
             if not successor in explored:
                 frontier.push(successor)
-                explored.add(successor)
                 tmp = tmpDirs[:] + [action]
                 dirs.push(tmp)
 
-    return None  
+    return tmpDirs  
 
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    frontier = util.PriorityQueue()
-    explored = set()
-    dirs = util.PriorityQueue()
-    tmpDirs = list()
-    frontier.push(problem.getStartState(), 0)
-    dirs.push(list(), 0)
-    
-    while not frontier.isEmpty():
-        state = frontier.pop()
-        tmpDirs = dirs.pop()
-        # Break when goal is reached
-        if problem.isGoalState(state):
-            return tmpDirs
-
-        if not state in explored:
-            for successor, action, stepCost in problem.getSuccessors(state):
-                if not successor in explored:
-                    tmp = tmpDirs[:] + [action]
-                    frontier.push(successor, problem.getCostOfActions(tmp))
-                    dirs.push(tmp, problem.getCostOfActions(tmp))
-                
-        explored.add(state)
-                
-    return None
-
-def nullHeuristic(state, problem=None):
-    """
-    A heuristic function estimates the cost from the current state to the nearest
-    goal in the provided SearchProblem.  This heuristic is trivial.
-    """
-    return 0
-
-def aStarSearch(problem, heuristic=nullHeuristic):
-    """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
     frontier = util.PriorityQueue()
     explored = set()
     dirs = util.PriorityQueue()
@@ -193,18 +155,29 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         tmpDirs = dirs.pop()
         # Break when goal is reached
         if problem.isGoalState(state):
-            return tmpDirs
-        
-        if not state in explored:
-            for successor, action, stepCost in problem.getSuccessors(state):
-                if not successor in explored:
-                    tmp = tmpDirs[:] + [action]
-                    frontier.push(successor, problem.getCostOfActions(tmp)+heuristic(successor, problem))
-                    dirs.push(tmp, problem.getCostOfActions(tmp)+heuristic(successor, problem))
-        
+            break   
         explored.add(state)
+        
+        for successor, action, stepCost in problem.getSuccessors(state):
+            if not successor in explored:
+                tmp = tmpDirs[:] + [action]
+                frontier.push(successor, problem.getCostOfActions(tmp))
+                dirs.push(tmp, problem.getCostOfActions(tmp))
                 
-    return None
+    return tmpDirs
+
+def nullHeuristic(state, problem=None):
+    """
+    A heuristic function estimates the cost from the current state to the nearest
+    goal in the provided SearchProblem.  This heuristic is trivial.
+    """
+    return 0
+
+def aStarSearch(problem, heuristic=nullHeuristic):
+    """Search the node that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
+    util.raiseNotDefined()
+
 
 # Abbreviations
 bfs = breadthFirstSearch
