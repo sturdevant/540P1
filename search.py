@@ -130,12 +130,8 @@ def breadthFirstSearch(problem):
         # Break when goal is reached
         if problem.isGoalState(state):
             return tmpDirs
-<<<<<<< HEAD
 
-=======
         explored.add(state)
->>>>>>> 8d58af4de0aa1f462bca7a465c44e7acb5c3b71e
-        
         for successor, action, stepCost in problem.getSuccessors(state):
             if not successor in explored:
                 frontier.push(successor)
@@ -143,11 +139,7 @@ def breadthFirstSearch(problem):
                 tmp = tmpDirs[:] + [action]
                 dirs.push(tmp)
 
-<<<<<<< HEAD
-    return None  
-=======
     return None 
->>>>>>> 8d58af4de0aa1f462bca7a465c44e7acb5c3b71e
 
 
 def uniformCostSearch(problem):
