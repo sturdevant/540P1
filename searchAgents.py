@@ -20,6 +20,12 @@ project description for details.
 
 Good luck and happy searching!
 """
+
+'''
+this is Anqi's first modification
+'''
+
+
 from game import Directions
 from game import Agent
 from game import Actions
