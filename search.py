@@ -97,20 +97,19 @@ def depthFirstSearch(problem):
     while not frontier.isEmpty():
         # Pop last element in frontier and add to explored list
         state = frontier.pop()
-        explored.add(state)
         tmpDirs = dirs.pop()
-        
         # Break when goal is reached
         if problem.isGoalState(state):
-            break
-    
+            return tmpDirs 
+        explored.add(state)
+        
         for successor, action, stepCost in problem.getSuccessors(state):
             if not successor in explored:
                 frontier.push(successor)
                 tmp = tmpDirs[:] + [action]
                 dirs.push(tmp)
 
-    return tmpDirs  
+    return None
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -125,13 +124,12 @@ def breadthFirstSearch(problem):
     while not frontier.isEmpty():
         # Pop first element in frontier and add to explored list
         state = frontier.pop()
-        explored.add(state)
         tmpDirs = dirs.pop()
-        
         # Break when goal is reached
         if problem.isGoalState(state):
             break
-    
+        explored.add(state)
+        
         for successor, action, stepCost in problem.getSuccessors(state):
             if not successor in explored:
                 frontier.push(successor)
@@ -143,8 +141,30 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    frontier = util.PriorityQueue()
+    explored = set()
+    dirs = util.PriorityQueue()
+    tmpDirs = list()
+    frontier.push(problem.getStartState(), 0)
+    dirs.push(list(), 0)
+    
+    while not frontier.isEmpty():
+        state = frontier.pop()
+#         while state in explored:
+#             state = frontier.pop()
+        tmpDirs = dirs.pop()
+        # Break when goal is reached
+        if problem.isGoalState(state):
+            break   
+        explored.add(state)
+        
+        for successor, action, stepCost in problem.getSuccessors(state):
+            if not successor in explored:
+                tmp = tmpDirs[:] + [action]
+                frontier.push(successor, problem.getCostOfActions(tmp))
+                dirs.push(tmp, problem.getCostOfActions(tmp))
+                
+    return tmpDirs
 
 def nullHeuristic(state, problem=None):
     """
