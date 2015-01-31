@@ -87,12 +87,59 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    frontier = util.Stack()
+    explored = set()
+    dirs = util.Stack()
+    tmpDirs = list()
+    frontier.push(problem.getStartState())
+    dirs.push(list())
+    
+    while not frontier.isEmpty():
+        # Pop last element in frontier and add to explored list
+        state = frontier.pop()
+        explored.add(state)
+        tmpDirs = dirs.pop()
+        
+        # Break when goal is reached
+        if problem.isGoalState(state):
+            break
+    
+        for successor, action, stepCost in problem.getSuccessors(state):
+            if not successor in explored:
+                frontier.push(successor)
+                tmp = tmpDirs[:] + [action]
+                dirs.push(tmp)
+
+    return tmpDirs  
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    frontier = util.Queue()
+    explored = set()
+    dirs = util.Queue()
+    tmpDirs = list()
+    frontier.push(problem.getStartState())
+    dirs.push(list())
+    
+    while not frontier.isEmpty():
+        # Pop first element in frontier and add to explored list
+        state = frontier.pop()
+        explored.add(state)
+        tmpDirs = dirs.pop()
+        
+        # Break when goal is reached
+        if problem.isGoalState(state):
+            break
+    
+        for successor, action, stepCost in problem.getSuccessors(state):
+            if not successor in explored:
+                frontier.push(successor)
+                tmp = tmpDirs[:] + [action]
+                dirs.push(tmp)
+
+    return tmpDirs  
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
